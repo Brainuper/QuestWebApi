@@ -18,8 +18,7 @@ describe("Api subjects.", () => {
 
   it("Get /api/subjects/1", (done) => {
     var subject = {
-      id: 1,
-      name: 'Geometry'
+      id: 1
     };
     request(app)
       .get('/api/subjects/1')
@@ -49,7 +48,7 @@ describe("Api subjects.", () => {
     };
 
     request(app)
-      .post('/api/subjects')
+      .put('/api/subjects/1')
       .send(subject)
       .expect(200, editSubject, finish(done));
   });

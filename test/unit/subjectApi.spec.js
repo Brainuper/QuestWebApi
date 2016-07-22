@@ -18,7 +18,8 @@ describe("Api subjects.", () => {
 
   it("Get /api/subjects/1", (done) => {
     var subject = {
-      id: 1
+      id: 1,
+      name: 'Geometry'
     };
     request(app)
       .get('/api/subjects/1')

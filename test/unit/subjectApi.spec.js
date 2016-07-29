@@ -1,9 +1,16 @@
-import app from '../../src/app/app';
+import app from '../helpers/appMock';
+import SubjectService from '../../src/app/components/subject/subjectService';
+import subjectRouter from '../../src/app/components/subject';
+import sinon from 'sinon';
 import request from 'supertest';
-
 import finish from '../helpers/finish';
 
 describe("Api subjects.", () => {
+
+  addRouteApp('/api/subjects', subjectRouter());
+
+  stubSubjectService();
+
   it("Get /api/subjects", (done) => {
 
     var subjects = [{
@@ -49,8 +56,39 @@ describe("Api subjects.", () => {
     };
 
     request(app)
-      .post('/api/subjects')
+      .put('/api/subjects/1')
       .send(subject)
       .expect(200, editSubject, finish(done));
   });
 })
+
+function addRouteApp(url, route) {
+  app.use(url, route);
+}
+
+function stubSubjectService() {
+  sinon.stub(SubjectService.prototype, 'getAll', () => {
+    return [{
+      id: 1,
+      name: 'Geometry'
+    }]
+  });
+  sinon.stub(SubjectService.prototype, 'getById', () => {
+    return {
+      id: 1,
+      name: 'Geometry'
+    }
+  });
+  sinon.stub(SubjectService.prototype, 'add', () => {
+    return {
+      id: 1,
+      name: 'Geometry'
+    }
+  });
+  sinon.stub(SubjectService.prototype, 'update', () => {
+    return {
+      id: 1,
+      name: 'Biology'
+    }
+  });
+}

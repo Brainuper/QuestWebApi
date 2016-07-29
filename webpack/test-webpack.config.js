@@ -14,6 +14,9 @@ module.exports = {
       test: /\.js$/,
       exclude: /node_modules/,
       loader: 'babel'
+    }, {
+      test: /sinon.*\.js$/,
+      loader: "imports?define=>false,require=>false"
     }],
   },
   plugins: [

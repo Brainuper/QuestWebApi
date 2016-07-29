@@ -1,6 +1,4 @@
-import express from 'express';
-
-import * as Controller from './components';
+import * as component from './components';
 
 export default function setup(app) {
   app.get('/api/version', (req, res) => {
@@ -8,5 +6,5 @@ export default function setup(app) {
     res.json({version: "1.0"});
   });
 
-  app.use('/api/subjects', Controller.subjectController());
+  app.use('/api/subjects', component.subjectRouter());
 };

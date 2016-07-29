@@ -1,13 +1,16 @@
-import app from '../helpers/appMock';
-import SubjectService from '../../src/app/components/subject/subjectService';
-import subjectRouter from '../../src/app/components/subject';
 import sinon from 'sinon';
 import request from 'supertest';
+
 import finish from '../helpers/finish';
+import app from '../helpers/appMock';
+
+import SubjectService from '../../src/app/components/subject/subjectService';
+import router from '../../src/app/components/subject';
+
 
 describe("Api subjects.", () => {
 
-  addRouteApp('/api/subjects', subjectRouter());
+  addRouteApp('/api/subjects', router());
 
   stubSubjectService();
 

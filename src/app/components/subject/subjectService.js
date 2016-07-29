@@ -1,30 +1,11 @@
 export default class SubjectService {
-  constructor() {
-    this.subjects = [{
-      id: 1,
-      name: 'Geometry'
-    }];
-  }
+  constructor() {}
 
-  getAll() {
-    return this.subjects;
-  }
+  getAll() {}
 
-  getById(id) {
-    let subject = this.subjects.filter((item) => item.id == id)[0];
-    return subject;
-  }
+  getById(id) {}
 
-  add(subject) {
-    this.subjects.push(subject);
+  add(subject) {}
 
-    return subject;
-  }
-
-  update(subject) {
-    return {
-      id: 1,
-      name: 'Biology'
-    };
-  }
+  update(subject) {}
 }

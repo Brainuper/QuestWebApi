@@ -7,4 +7,5 @@ export default function setup(app) {
   });
 
   app.use('/api/subjects', component.subjectRouter());
+  app.use('/api/quests', component.questRouter());
 };

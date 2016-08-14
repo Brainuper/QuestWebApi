@@ -7,88 +7,146 @@ import app from '../helpers/appMock';
 import router from '../../src/app/components/quest';
 import QuestService from '../../src/app/components/quest/questService';
 
-describe("Api quest", () => {
+describe('Testing api quest', () => {
+  var stub;
+
   addRouteApp('/api/quests', router());
-  stubQuestService();
 
-  it("Get /api/quests", (done) => {
+  afterEach(() => {
+    stub.restore();
+  });
 
-    var quests = [{
+  it('Get /api/quests', (done) => {
+    stub = sinon.stub(QuestService.prototype, 'getAll', () => {
+      return Promise.resolve([{
+        id: 1,
+        text: '2 + 2 * 2 = ?',
+        option: ['2', '4', '6', '8'],
+        answer: 2,
+        subject: {
+          id: 1,
+          text: 'Математика'
+        }
+      }]);
+    });
+
+    let expectQuest = [{
       id: 1,
-      text: '2 * 2 + 2 = ?'
+      text: '2 + 2 * 2 = ?',
+      option: ['2', '4', '6', '8'],
+      answer: 2,
+      subject: {
+        id: 1,
+        text: 'Математика'
+      }
     }];
 
     request(app)
       .get('/api/quests')
-      .expect(200, quests, finish(done));
+      .expect(200, expectQuest, finish(done));
   });
 
-  it("Get /api/quests/1", (done) => {
-    var quest = {
+  it('Get /api/quests/1', (done) => {
+    stub = sinon.stub(QuestService.prototype, 'getById', () => {
+      return Promise.resolve({
+        id: 1,
+        text: '2 + 2 * 2 = ?',
+        option: ['2', '4', '6', '8'],
+        answer: 2,
+        subject: {
+          id: 1,
+          text: 'Математика'
+        }
+      });
+    });
+
+    let expectQuest = {
       id: 1,
-      text: '2 * 2 + 2 = ?'
+      text: '2 + 2 * 2 = ?',
+      option: ['2', '4', '6', '8'],
+      answer: 2,
+      subject: {
+        id: 1,
+        text: 'Математика'
+      }
     };
+
     request(app)
       .get('/api/quests/1')
-      .expect(200, quest, finish(done));
+      .expect(200, expectQuest, finish(done));
   });
 
-  it("Post /api/quests", (done) => {
-    var quest = {
+  it('Post /api/quests', (done) => {
+    stub = sinon.stub(QuestService.prototype, 'add', (quest) => {
+      quest.id = 1;
+      quest.subject = {
+        id: quest.subjectId,
+        text: 'Математика'
+      };
+      delete quest.subjectId;
+      return Promise.resolve(quest);
+    });
+
+    var postQuest = {
+      text: '2 + 2 * 2 = ?',
+      option: ['2', '4', '6', '8'],
+      answer: 2,
+      subjectId: 1
+    };
+
+    let expectQuest = {
       id: 1,
-      text: '2 * 2 + 2 = ?'
+      text: '2 + 2 * 2 = ?',
+      option: ['2', '4', '6', '8'],
+      answer: 2,
+      subject: {
+        id: 1,
+        text: 'Математика'
+      }
     };
 
     request(app)
       .post('/api/quests')
-      .send(quest)
-      .expect(201, quest, finish(done));
+      .send(postQuest)
+      .expect(201, expectQuest, finish(done));
   });
 
-  it("Put /api/quests/1", (done) => {
-    var quest = {
-      text: '2 * 2 + 2 = ?'
+  it('Put /api/quests/1', (done) => {
+    stub = sinon.stub(QuestService.prototype, 'update', () => {
+      return Promise.resolve({
+        id: 1,
+        text: 'Дано выражение x = 2 + 2 * 2. Чему равна x?',
+        option: ['2', '4', '6', '8'],
+        answer: 2,
+        subject: {
+          id: 1,
+          text: 'Математика'
+        }
+      })
+    });
+
+    let putQuest = {
+      text: 'Дано выражение x = 2 + 2 * 2. Чему равна x?'
     };
 
-    var editQuest = {
+    let expectQuest = {
       id: 1,
-      text: '2 * 2 + 2 = ?'
+      text: 'Дано выражение x = 2 + 2 * 2. Чему равна x?',
+      option: ['2', '4', '6', '8'],
+      answer: 2,
+      subject: {
+        id: 1,
+        text: 'Математика'
+      }
     };
 
     request(app)
       .put('/api/quests/1')
-      .send(quest)
-      .expect(200, editQuest, finish(done));
+      .send(putQuest)
+      .expect(200, expectQuest, finish(done));
   });
 });
 
 function addRouteApp(url, route) {
   app.use(url, route);
-}
-
-function stubQuestService() {
-  sinon.stub(QuestService.prototype, 'getAll', () => {
-    return [{
-      id: 1,
-      text: '2 * 2 + 2 = ?'
-    }]
-  });
-  sinon.stub(QuestService.prototype, 'getById', () => {
-    return {
-      id: 1,
-      text: '2 * 2 + 2 = ?'
-    }
-  });
-  sinon.stub(QuestService.prototype, 'add', () => {
-    return {
-      id: 1,
-      text: '2 * 2 + 2 = ?'
-    }
-  });
-  sinon.stub(QuestService.prototype, 'update', () => {
-    return {
-      id: 1,
-      text: '2 * 2 + 2 = ?'
-    }
-  });
 }

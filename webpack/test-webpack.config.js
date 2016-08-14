@@ -2,11 +2,9 @@ var webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-  entry: {
-    unit: './test/index'
-  },
+  entry: './test/index',
   output: {
-    path: 'tmp',
+    path: 'tmp/test',
     filename: 'backend.spec.js'
   },
   module: {
@@ -26,7 +24,6 @@ module.exports = {
     })
   ],
   devTool: '#eval-source-map',
-  debug: true,
   target: 'node',
   externals: [nodeExternals()]
 };

@@ -1,11 +1,10 @@
 import Sequelize from 'sequelize';
-import config from './config';
+import config from '../config/config.json';
 
-var db = config.db;
-
-var sequelize = new Sequelize(db.database, db.user, db.password, {
+var env = process.env.NODE_ENV || 'development';
+var db = config[env];
+var sequelize = new Sequelize(db.database, db.username, db.password, {
   host: db.host,
-  port: db.port,
   dialect: db.dialect,
 
   pool: {

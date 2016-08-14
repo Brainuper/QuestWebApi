@@ -58,9 +58,6 @@ gulp.task('web-dev', function(callback) {
   nodemon({
       script: './dist/backend.js',
       ext: 'js',
-      env: {
-        'NODE_ENV': 'development'
-      },
       watch: './dist'
     })
     .on('restart', function() {
@@ -70,7 +67,9 @@ gulp.task('web-dev', function(callback) {
 
 gulp.task('dev', ['watch-dev', 'web-dev']);
 
-gulp.task('clean', function () {
+gulp.task('build', ['build-dev', 'build-test']);
+
+gulp.task('clean', function() {
   return gulp.src([paths.dist, paths.tmp], {read: false})
     .pipe(rimraf());
 });

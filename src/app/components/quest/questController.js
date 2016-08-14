@@ -1,38 +1,53 @@
 import QuestService from './questService';
+// import SubjectService from '../subject/subjectService';
 
 export default class QuestController {
   constructor() {
     this.questService = new QuestService();
+    // this.subjectService = new SubjectService();
   }
 
   getAll() {
     return (req, res) => {
-      let quests = this.questService.getAll();
-      res.json(quests);
+      this.questService.getAll().then((data) => {
+        res.json(data);
+      });
+
     }
   }
 
   getById() {
     return (req, res) => {
-      let quest = this.questService.getById(req.params.id);
-      res.json(quest);
+      this.questService.getById(req.params.id).then((data) => {
+        res.json(data);
+      });
     }
   }
 
   add() {
     return (req, res) => {
       let createQuest = req.body;
-      createQuest = this.questService.add(createQuest);
-      res.status(201).json(createQuest);
+      this.questService.add(createQuest).then((data) => {
+        res.status(201).json(data);
+      });
     }
   }
 
   edit() {
     return (req, res) => {
       let editQuest = req.body;
-      editQuest.id = req.params.id;
-      editQuest = this.questService.update(editQuest);
-      res.json(editQuest);
+      let id = req.params.id;
+      this.questService.update(id, editQuest).then((data) => {
+        res.json(data);
+      });
+    }
+  }
+
+  delete() {
+    return (req, res) => {
+      this.questService.remove(req.params.id).then((data) => {
+        res.json(data);
+      })
     }
   }
 };

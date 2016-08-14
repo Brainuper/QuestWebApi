@@ -7,32 +7,44 @@ export default class SubjectController {
 
   getAll() {
     return (req, res) => {
-      let subjects = this.subjectService.getAll();
-      res.json(subjects);
+      this.subjectService.getAll().then((data) => {
+        res.json(data);
+      });
     }
   }
 
   getById() {
     return (req, res) => {
-      let subject = this.subjectService.getById(req.params.id);
-      res.json(subject);
+      this.subjectService.getById(req.params.id).then((data) => {
+        res.json(data);
+      });
     }
   }
 
   add() {
     return (req, res) => {
       let createSubject = req.body;
-      createSubject = this.subjectService.add(createSubject);
-      res.status(201).json(createSubject);
+      this.subjectService.add(createSubject).then((data) => {
+        res.status(201).json(data);
+      });
     }
   }
 
   edit() {
     return (req, res) => {
       let editSubject = req.body;
-      editSubject.id = req.params.id;
-      editSubject = this.subjectService.update(editSubject);
-      res.json(editSubject);
+      let id = req.params.id;
+      this.subjectService.update(id, editSubject).then((data) => {
+        res.json(data);
+      });
+    }
+  }
+
+  delete() {
+    return (req, res) => {
+      let deleted = this.subjectService.remove(req.params.id).then((data) => {
+        res.status(200).json(data);
+      });
     }
   }
 };

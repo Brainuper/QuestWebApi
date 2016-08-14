@@ -2,16 +2,16 @@ var path = require('path');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var jasmine = require('gulp-jasmine');
-var reporters = require('jasmine-reporters');
+var rimraf = require('gulp-rimraf');
 var webpack = require('webpack');
 var prodConfig = require('./webpack/prod-webpack.config.js');
 var devConfig = require('./webpack/dev-webpack.config.js');
 var testConfig = require('./webpack/test-webpack.config.js');
-var nodemon = require('nodemon');
+var nodemon = require('gulp-nodemon');
 
 var paths = {
   js: ['src/**/*.js'],
-  backend: 'dist/backend.js',
+  backend: './dist/backend.js',
   src: 'src',
   dist: 'dist',
   tmp: 'tmp',
@@ -19,63 +19,57 @@ var paths = {
 
 var port = process.env.PORT || 8080;
 
-gulp.task("webpack:build-test", function(callback) {
+gulp.task('build-test', function(callback) {
   webpack(testConfig, function(err, stats) {
-    if (err) throw new gutil.PluginError("webpack:build", err);
-    gutil.log("[webpack:build-test]", stats.toString({
+    if (err) throw new gutil.PluginError('build-test', err);
+    gutil.log('[build-test]', stats.toString({
       colors: true
     }));
     callback();
   });
 });
 
-gulp.task("test-jasmine", ["webpack:build-test"], function() {
-  return gulp.src("tmp/backend.spec.js")
-    .pipe(jasmine());
+gulp.task('test-jasmine', ['build-test'], function() {
+  return gulp.src('tmp/test/**/*.spec.js')
+    .pipe(jasmine({
+      verbose: true
+    }));
 })
 
-gulp.task("test", function() {
-  gulp.watch(["src/**/*.js", "test/**/*.js"], ["test-jasmine"]);
+gulp.task('test', function() {
+  gulp.watch(['src/**/*.js', 'test/**/*.js'], ['test-jasmine']);
 });
 
-// gulp.task("build-dev", ["webpack:build-dev"], function() {
-//   gulp.watch(["src/**/*"], ["webpack:build-dev"]);
-// });
-//
-// gulp.task('build', ['webpack:build']);
-//
-// gulp.task('webpack:build', function(callback) {
-//   webpack(prodConfig, function(err, stats) {
-//     if (err) throw new gutil.PluginError("webpack:build", err);
-//     gutil.log("[webpack:build]", stats.toString({
-//       colors: true
-//     }));
-//     callback();
-//   });
-// });
-//
-// gulp.task("webpack:build-dev", function(callback) {
-//   webpack(devConfig, function(err, stats) {
-//     if (err) throw new util.PluginError("webpack:build-dev", err);
-//     gutil.log("[webpack:build-dev]", stats.toString({
-//       colors: true
-//     }));
-//     callback();
-//   });
-// });
+gulp.task('build-dev', function(callback) {
+  webpack(devConfig, function(err, stats) {
+    if (err) throw new gutil.PluginError('build-dev', err);
+    gutil.log('[build-dev]', stats.toString({
+      colors: true
+    }));
+    callback();
+  });
+});
 
+gulp.task('watch-dev', function() {
+  gulp.watch(['src/**/*'], ['build-dev']);
+});
 
+gulp.task('web-dev', function(callback) {
+  nodemon({
+      script: './dist/backend.js',
+      ext: 'js',
+      watch: './dist'
+    })
+    .on('restart', function() {
+      console.log('restarted!');
+    });
+});
 
-// gulp.task("webpack-dev-server", function(callback) {
-//   nodemon({
-//     execMap: {
-//       js: 'node'
-//     },
-//     script: path.join(__dirname, paths.backend),
-//     ignore: ['*'],
-//     watch: ['dist'],
-//     ext: 'noop'
-//   }).on('restart', function() {
-//     console.log('Restarted!');
-//   });
-// });
+gulp.task('dev', ['watch-dev', 'web-dev']);
+
+gulp.task('build', ['build-dev', 'build-test']);
+
+gulp.task('clean', function() {
+  return gulp.src([paths.dist, paths.tmp], {read: false})
+    .pipe(rimraf());
+});

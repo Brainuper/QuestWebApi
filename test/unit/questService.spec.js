@@ -1,12 +1,12 @@
 import QuestService from '../../src/app/components/quest/questService';
 
-xdescribe("Testing quest service", () => {
+xdescribe('Testing quest service', () => {
   var questService = new QuestService();
   var quest;
 
-  it("Add quest with new ", (done) => {
+  it('Add quest with new ', (done) => {
     let questCreate = {
-      text: "2 + 2 * 2 = ?",
+      text: '2 + 2 * 2 = ?',
       option: ['2', '4', '6', '8'],
       answer: 2,
       subjectId: 15

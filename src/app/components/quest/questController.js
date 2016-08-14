@@ -1,4 +1,5 @@
 import QuestService from './questService';
+import logger from '../../../util/logger';
 
 export default class QuestController {
   constructor() {
@@ -10,7 +11,7 @@ export default class QuestController {
       this.questService.getAll().then((data) => {
         res.json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
 
@@ -22,7 +23,7 @@ export default class QuestController {
       this.questService.getById(req.params.id).then((data) => {
         res.json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }
@@ -34,7 +35,7 @@ export default class QuestController {
       this.questService.add(createQuest).then((data) => {
         res.status(201).json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }
@@ -47,7 +48,7 @@ export default class QuestController {
       this.questService.update(id, editQuest).then((data) => {
         res.json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }
@@ -58,7 +59,7 @@ export default class QuestController {
       this.questService.remove(req.params.id).then((data) => {
         res.json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }

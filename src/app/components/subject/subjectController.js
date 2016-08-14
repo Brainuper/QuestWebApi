@@ -1,4 +1,5 @@
 import SubjectService from './subjectService';
+import logger from '../../../util/logger';
 
 export default class SubjectController {
   constructor() {
@@ -10,7 +11,7 @@ export default class SubjectController {
       this.subjectService.getAll().then((data) => {
         res.json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }
@@ -21,7 +22,7 @@ export default class SubjectController {
       this.subjectService.getById(req.params.id).then((data) => {
         res.json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }
@@ -33,7 +34,7 @@ export default class SubjectController {
       this.subjectService.add(createSubject).then((data) => {
         res.status(201).json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }
@@ -46,7 +47,7 @@ export default class SubjectController {
       this.subjectService.update(id, editSubject).then((data) => {
         res.json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }
@@ -57,7 +58,7 @@ export default class SubjectController {
       let deleted = this.subjectService.remove(req.params.id).then((data) => {
         res.status(200).json(data);
       }).catch((err) => {
-        console.error(err);
+        logger.error(err);
         res.sendStatus(500);
       });
     }

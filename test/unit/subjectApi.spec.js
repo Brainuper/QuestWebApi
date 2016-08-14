@@ -8,14 +8,23 @@ import SubjectService from '../../src/app/components/subject/subjectService';
 import router from '../../src/app/components/subject';
 
 
-describe("Api subjects.", () => {
+describe("Testing api subjects.", () => {
 
   addRouteApp('/api/subjects', router());
 
-  stubSubjectService();
+  var stubs;
+
+  beforeEach(() => {
+    stubs = stubSubjectService(SubjectService.prototype);
+  });
+
+  afterEach(() => {
+    for (let stub of stubs) {
+      stub.restore();
+    }
+  });
 
   it("Get /api/subjects", (done) => {
-
     var subjects = [{
       id: 1,
       name: 'Geometry'
@@ -69,29 +78,30 @@ function addRouteApp(url, route) {
   app.use(url, route);
 }
 
-function stubSubjectService() {
-  sinon.stub(SubjectService.prototype, 'getAll', () => {
-    return [{
-      id: 1,
-      name: 'Geometry'
-    }]
-  });
-  sinon.stub(SubjectService.prototype, 'getById', () => {
-    return {
-      id: 1,
-      name: 'Geometry'
-    }
-  });
-  sinon.stub(SubjectService.prototype, 'add', () => {
-    return {
-      id: 1,
-      name: 'Geometry'
-    }
-  });
-  sinon.stub(SubjectService.prototype, 'update', () => {
-    return {
-      id: 1,
-      name: 'Biology'
-    }
-  });
+function stubSubjectService(obj) {
+  return [sinon.stub(obj, 'getAll', () => {
+      return Promise.resolve([{
+        id: 1,
+        name: 'Geometry'
+      }]);
+    }),
+    sinon.stub(obj, 'getById', () => {
+      return Promise.resolve({
+        id: 1,
+        name: 'Geometry'
+      });
+    }),
+    sinon.stub(obj, 'add', () => {
+      return Promise.resolve({
+        id: 1,
+        name: 'Geometry'
+      });
+    }),
+    sinon.stub(obj, 'update', () => {
+      return Promise.resolve({
+        id: 1,
+        name: 'Biology'
+      });
+    })
+  ];
 }

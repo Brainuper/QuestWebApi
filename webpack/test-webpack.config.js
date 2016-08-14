@@ -13,17 +13,20 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel'
     }, {
+      test: /\.json$/,
+      loader: 'json'
+    }, {
       test: /sinon.*\.js$/,
       loader: "imports?define=>false,require=>false"
     }],
   },
   plugins: [
-    new webpack.BannerPlugin('require("source-map-support").install();', {
-      raw: true,
-      entryOnly: false
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('test')
+      }
     })
   ],
-  devTool: '#eval-source-map',
   target: 'node',
   externals: [nodeExternals()]
 };

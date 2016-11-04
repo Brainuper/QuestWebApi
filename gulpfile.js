@@ -23,6 +23,7 @@ gulp.task('build-test', function(callback) {
   webpack(testConfig, function(err, stats) {
     if (err) throw new gutil.PluginError('build-test', err);
     gutil.log('[build-test]', stats.toString({
+      chunks: false,
       colors: true
     }));
     callback();
@@ -36,7 +37,7 @@ gulp.task('test-jasmine', ['build-test'], function() {
     }));
 })
 
-gulp.task('test', function() {
+gulp.task('test', ['test-jasmine'], function() {
   gulp.watch(['src/**/*.js', 'test/**/*.js'], ['test-jasmine']);
 });
 
@@ -44,6 +45,7 @@ gulp.task('build-dev', function(callback) {
   webpack(devConfig, function(err, stats) {
     if (err) throw new gutil.PluginError('build-dev', err);
     gutil.log('[build-dev]', stats.toString({
+      chunks: false,
       colors: true
     }));
     callback();
@@ -69,7 +71,18 @@ gulp.task('dev', ['watch-dev', 'web-dev']);
 
 gulp.task('build', ['build-dev', 'build-test']);
 
+gulp.task('server', function () {
+  nodemon({
+    script: './dist/backend.js',
+    ext: 'js'
+  });
+});
+
 gulp.task('clean', function() {
   return gulp.src([paths.dist, paths.tmp], {read: false})
     .pipe(rimraf());
+});
+
+gulp.task('clean-node', function() {
+  return gulp.src('node_modules', {read: false}).pipe(rimraf());
 });

@@ -13,4 +13,4 @@ export default function () {
     .get(controller.getById())
     .put(controller.edit());
   return router;
-};
+}

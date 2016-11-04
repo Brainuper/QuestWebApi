@@ -1,4 +1,4 @@
-import {Quest, Subject} from '../../models';
+import {Quest, Subject} from 'models';
 
 export default class QuestService {
   constructor() {
@@ -6,36 +6,42 @@ export default class QuestService {
   }
 
   getAll() {
-    return this.Model.findAll({
-      include: [Subject]
-    });
+    return this
+      .Model
+      .findAll({include: [Subject]});
   }
 
   getById(id) {
-    return this.Model.findById(id);
+    return this
+      .Model
+      .findById(id);
   }
 
   add(quest) {
     // return this.Model.sync().then(() => {
-      return this.Model.create(quest, {
-        include: [Subject]
-      });
+    return this
+      .Model
+      .create(quest, {include: [Subject]});
     // })
   }
 
   update(id, quest) {
-    return this.Model.update(quest, {
-      where: {
-        id: id
-      }
-    });
+    return this
+      .Model
+      .update(quest, {
+        where: {
+          id: id
+        }
+      });
   }
 
   remove(id) {
-    return this.Model.destroy({
-      where: {
-        id: id
-      }
-    });
+    return this
+      .Model
+      .destroy({
+        where: {
+          id: id
+        }
+      });
   }
-};
+}

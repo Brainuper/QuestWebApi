@@ -4,8 +4,8 @@ import request from 'supertest';
 import finish from '../helpers/finish';
 import app from '../helpers/appMock';
 
-import router from '../../src/app/components/quest';
-import QuestService from '../../src/app/components/quest/questService';
+import router from 'components/quest';
+import QuestService from 'components/quest/questService';
 
 describe('Testing api quest', () => {
   var stub;
@@ -18,28 +18,36 @@ describe('Testing api quest', () => {
 
   it('Get /api/quests', (done) => {
     stub = sinon.stub(QuestService.prototype, 'getAll', () => {
-      return Promise.resolve([{
+      return Promise.resolve([
+        {
+          id: 1,
+          text: '2 + 2 * 2 = ?',
+          option: [
+            '2', '4', '6', '8'
+          ],
+          answer: 2,
+          subject: {
+            id: 1,
+            text: 'Математика'
+          }
+        }
+      ]);
+    });
+
+    let expectQuest = [
+      {
         id: 1,
         text: '2 + 2 * 2 = ?',
-        option: ['2', '4', '6', '8'],
+        option: [
+          '2', '4', '6', '8'
+        ],
         answer: 2,
         subject: {
           id: 1,
           text: 'Математика'
         }
-      }]);
-    });
-
-    let expectQuest = [{
-      id: 1,
-      text: '2 + 2 * 2 = ?',
-      option: ['2', '4', '6', '8'],
-      answer: 2,
-      subject: {
-        id: 1,
-        text: 'Математика'
       }
-    }];
+    ];
 
     request(app)
       .get('/api/quests')
@@ -51,7 +59,9 @@ describe('Testing api quest', () => {
       return Promise.resolve({
         id: 1,
         text: '2 + 2 * 2 = ?',
-        option: ['2', '4', '6', '8'],
+        option: [
+          '2', '4', '6', '8'
+        ],
         answer: 2,
         subject: {
           id: 1,
@@ -63,7 +73,9 @@ describe('Testing api quest', () => {
     let expectQuest = {
       id: 1,
       text: '2 + 2 * 2 = ?',
-      option: ['2', '4', '6', '8'],
+      option: [
+        '2', '4', '6', '8'
+      ],
       answer: 2,
       subject: {
         id: 1,
@@ -89,7 +101,9 @@ describe('Testing api quest', () => {
 
     var postQuest = {
       text: '2 + 2 * 2 = ?',
-      option: ['2', '4', '6', '8'],
+      option: [
+        '2', '4', '6', '8'
+      ],
       answer: 2,
       subjectId: 1
     };
@@ -97,7 +111,9 @@ describe('Testing api quest', () => {
     let expectQuest = {
       id: 1,
       text: '2 + 2 * 2 = ?',
-      option: ['2', '4', '6', '8'],
+      option: [
+        '2', '4', '6', '8'
+      ],
       answer: 2,
       subject: {
         id: 1,
@@ -116,13 +132,15 @@ describe('Testing api quest', () => {
       return Promise.resolve({
         id: 1,
         text: 'Дано выражение x = 2 + 2 * 2. Чему равна x?',
-        option: ['2', '4', '6', '8'],
+        option: [
+          '2', '4', '6', '8'
+        ],
         answer: 2,
         subject: {
           id: 1,
           text: 'Математика'
         }
-      })
+      });
     });
 
     let putQuest = {
@@ -132,7 +150,9 @@ describe('Testing api quest', () => {
     let expectQuest = {
       id: 1,
       text: 'Дано выражение x = 2 + 2 * 2. Чему равна x?',
-      option: ['2', '4', '6', '8'],
+      option: [
+        '2', '4', '6', '8'
+      ],
       answer: 2,
       subject: {
         id: 1,

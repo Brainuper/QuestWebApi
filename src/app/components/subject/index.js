@@ -13,6 +13,6 @@ var subjectRouter = function() {
     .get(controller.getById())
     .put(controller.edit());
   return router;
-}
+};
 
 export default subjectRouter;

@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import sequelize from '../db';
+import sequelize from 'db';
 
 var Quest = sequelize.define('quest', {
   text: {

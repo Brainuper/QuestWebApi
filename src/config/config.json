@@ -1,23 +1,14 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "admin",
     "database": "QuestStorage_dev",
-    "host": "192.168.99.100",
-    "dialect": "postgres"
+    "host": "192.168.99.100"
   },
   "test": {
-    "username": "postgres",
-    "password": "admin",
     "database": "QuestStorage_test",
-    "host": "192.168.99.100",
-    "dialect": "postgres"
+    "host": "192.168.99.100"
   },
   "production": {
-    "username": "postgres",
-    "password": "admin",
     "database": "QuestStorage",
-    "host": "192.168.99.100",
-    "dialect": "postgres"
+    "host": "192.168.99.100"
   }
 }

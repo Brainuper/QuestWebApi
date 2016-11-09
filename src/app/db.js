@@ -1,17 +1,10 @@
-import Sequelize from 'sequelize';
+import mongoose from 'mongoose';
 import config from 'config.json';
 
-var env = process.env.NODE_ENV || 'development';
-var db = config[env];
-var sequelize = new Sequelize(db.database, db.username, db.password, {
-  host: db.host,
-  dialect: db.dialect,
+mongoose.Promise = global.Promise;
 
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  }
-});
+let env = process.env.NODE_ENV || 'development';
+let { host, database} = config[env];
+const mongodb = mongoose.connect(`mongodb://${host}/${database}`);
 
-export default sequelize;
+export default mongodb;

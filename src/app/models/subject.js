@@ -1,10 +1,28 @@
-import Sequelize from 'sequelize';
-import sequelize from 'db';
+import mongoose, {Schema} from 'mongoose';
 
-var Subject = sequelize.define('subject', {
-  text: {
-    type: Sequelize.STRING
+const model = {
+  name: String,
+  createAt: {
+    type: Date,
+    default: Date.now
+  },
+  updateAt: {
+    type: Date,
+    default: Date.now
   }
+};
+
+const SubjectSchema = new Schema(model);
+
+SubjectSchema.pre('save', function(next) {
+  let self = this;
+  let date = Date.now();
+  if (self.updateAt < date) {
+    self.updateAt = date;
+  }
+  return next();
 });
 
-export default Subject;
+const Subject = mongoose.model('Subject', SubjectSchema);
+
+export {Subject, SubjectSchema};

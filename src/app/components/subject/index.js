@@ -11,7 +11,8 @@ var subjectRouter = function() {
 
   router.route('/:id')
     .get(controller.getById())
-    .put(controller.edit());
+    .put(controller.edit())
+    .delete(controller.delete());
   return router;
 };
 

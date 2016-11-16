@@ -28,7 +28,11 @@ export default class QuestController {
         .questService
         .getById(req.params.id)
         .then((data) => {
-          res.json(data);
+          if (data) {
+            res.json(data);
+          } else {
+            res.sendStatus(404);
+          }
         })
         .catch((err) => {
           logger.error(err);
@@ -63,7 +67,11 @@ export default class QuestController {
         .questService
         .update(id, editQuest)
         .then((data) => {
-          res.json(data);
+          if (data) {
+            res.json(data);
+          } else {
+            res.sendStatus(404);
+          }
         })
         .catch((err) => {
           logger.error(err);
@@ -78,7 +86,11 @@ export default class QuestController {
         .questService
         .remove(req.params.id)
         .then((data) => {
-          res.json(data);
+          if (data) {
+            res.json(data);
+          } else {
+            res.sendStatus(404);
+          }
         })
         .catch((err) => {
           logger.error(err);

@@ -1,45 +1,38 @@
 import {Subject} from 'models';
 
 export default class SubjectService {
-  constructor() {
-    this.Model = Subject;
-  }
+  constructor() {}
 
   getAll() {
-    return this
-      .Model
-      .findAll();
+    return Subject.find();
   }
 
   getById(id) {
-    return this
-      .Model
-      .findById(id);
+    return Subject.findById(id);
   }
 
   add(subject) {
-    return this
-      .Model
-      .create(subject);
+    let instance = new Subject(subject);
+    let promise = instance.save();
+    return promise;
   }
 
   update(id, subject) {
-    return this
-      .Model
-      .update(subject, {
-        where: {
-          id: id
-        }
-      });
+    let promise = Subject.findById(id);
+
+    promise.then((doc) => {
+      if (doc) {
+        let mergeDoc = Object.assign(doc, subject);
+        doc = mergeDoc.save();
+      }
+      return doc;
+    });
+
+    return promise;
   }
 
   remove(id) {
-    return this
-      .Model
-      .destroy({
-        where: {
-          id: id
-        }
-      });
+    let promise = Subject.findOneAndRemove(id);
+    return promise;
   }
 }

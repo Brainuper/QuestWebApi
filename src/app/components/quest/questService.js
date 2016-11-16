@@ -1,47 +1,43 @@
-import {Quest, Subject} from 'models';
+import {Quest} from 'models';
 
 export default class QuestService {
-  constructor() {
-    this.Model = Quest;
-  }
+  constructor() {}
 
   getAll() {
-    return this
-      .Model
-      .findAll({include: [Subject]});
+    let promise = Quest
+      .find()
+      .populate('subjects')
+      .exec();
+    return promise;
   }
 
   getById(id) {
-    return this
-      .Model
-      .findById(id);
+    let promise = Quest.findById(id);
+    return promise;
   }
 
   add(quest) {
-    // return this.Model.sync().then(() => {
-    return this
-      .Model
-      .create(quest, {include: [Subject]});
-    // })
+    let instance = new Quest(quest);
+    let promise = instance.save();
+    return promise;
   }
 
   update(id, quest) {
-    return this
-      .Model
-      .update(quest, {
-        where: {
-          id: id
-        }
-      });
+    let promise = Quest.findById(id);
+
+    promise.then((doc) => {
+      if (doc) {
+        let mergeDoc = Object.assign(doc, quest);
+        return mergeDoc.save();
+      }
+      return doc;
+    });
+
+    return promise;
   }
 
   remove(id) {
-    return this
-      .Model
-      .destroy({
-        where: {
-          id: id
-        }
-      });
+    let promise = Quest.findOneAndRemove(id);
+    return promise;
   }
 }

@@ -27,7 +27,11 @@ export default class SubjectController {
         .subjectService
         .getById(req.params.id)
         .then((data) => {
-          res.json(data);
+          if (data) {
+            res.json(data);
+          } else {
+            res.sendStatus(404);
+          }
         })
         .catch((err) => {
           logger.error(err);
@@ -42,10 +46,10 @@ export default class SubjectController {
       this
         .subjectService
         .add(createSubject)
-        .then((data) => {
+        .then((doc) => {
           res
             .status(201)
-            .json(data);
+            .json(doc);
         })
         .catch((err) => {
           logger.error(err);
@@ -62,7 +66,11 @@ export default class SubjectController {
         .subjectService
         .update(id, editSubject)
         .then((data) => {
-          res.json(data);
+          if (data) {
+            res.json(data);
+          } else {
+            res.sendStatus(404);
+          }
         })
         .catch((err) => {
           logger.error(err);
@@ -73,13 +81,15 @@ export default class SubjectController {
 
   delete() {
     return (req, res) => {
-      let deleted = this
+      this
         .subjectService
         .remove(req.params.id)
         .then((data) => {
-          res
-            .status(200)
-            .json(data);
+          if (data) {
+            res.json(data);
+          } else {
+            res.sendStatus(404);
+          }
         })
         .catch((err) => {
           logger.error(err);

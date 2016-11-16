@@ -1,5 +1,9 @@
 import mongoose, {Schema} from 'mongoose';
 
+const {Types: {
+    ObjectId
+  }} = Schema;
+
 const model = {
   name: String,
   createAt: {

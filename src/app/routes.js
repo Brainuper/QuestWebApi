@@ -1,6 +1,6 @@
 import * as component from './components';
 import 'db';
-// import logger from 'logger';
+import logger from 'logger';
 
 export default function setup(app) {
   app.get('/api/version', (req, res) => {
@@ -10,4 +10,5 @@ export default function setup(app) {
 
   app.use('/api/subjects', component.subjectRouter());
   app.use('/api/quests', component.questRouter());
+  app.use('/api/random', component.randomRouter());
 }

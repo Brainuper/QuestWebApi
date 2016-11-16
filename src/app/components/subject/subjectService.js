@@ -19,7 +19,7 @@ export default class SubjectService {
 
   update(id, subject) {
     let promise = Subject.findById(id);
-    
+
     promise.then((doc) => {
       if (doc) {
         let mergeDoc = Object.assign(doc, subject);

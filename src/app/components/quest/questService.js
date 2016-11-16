@@ -1,4 +1,4 @@
-import {Quest, Subject} from 'models';
+import {Quest} from 'models';
 
 export default class QuestService {
   constructor() {}

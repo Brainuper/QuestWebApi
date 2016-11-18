@@ -1,0 +1,20 @@
+version: '2'
+services:
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ~/data/mongo/questwebapi:/data/db
+  web:
+    build: .
+    command: node build/backend
+    volumes:
+      - ./logs:/app/logs
+    ports:
+      - "9001:8080"
+    depends_on:
+      - db
+    environment:
+      - PORT=9001
+      - MONGO_DB=QuestStorage

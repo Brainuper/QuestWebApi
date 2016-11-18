@@ -1,0 +1,14 @@
+{
+  "development": {
+    "database": "QuestStorage_dev",
+    "host": "192.168.99.100"
+  },
+  "test": {
+    "database": "QuestStorage_test",
+    "host": "192.168.99.100"
+  },
+  "production": {
+    "database": "QuestStorage",
+    "host": "192.168.99.100"
+  }
+}
